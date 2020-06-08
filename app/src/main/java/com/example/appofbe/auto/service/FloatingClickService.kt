@@ -12,8 +12,10 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import com.example.appofbe.R
+import com.example.appofbe.app.Log
 import com.example.appofbe.auto.TouchAndDragListener
 import com.example.appofbe.auto.dp2px
+import com.example.appofbe.facebook_utils.FaceUtils.openAppFacebook
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
 
@@ -61,11 +63,35 @@ class FloatingClickService : Service() {
 
         //adding an touchlistener to make drag movement of the floating widget
         view.setOnTouchListener(
-            TouchAndDragListener(params, startDragDistance,
-                { viewOnClick() },
+            TouchAndDragListener(
+                params,
+                startDragDistance,
+                {
+                    //viewOnClick()
+                    //login()
+                },
                 { manager.updateViewLayout(view, params) })
         )
+        // login()
+        //execute()
     }
+
+    private fun login() {
+        openAppFacebook()
+        //openPageWith()
+        Thread.sleep(5000)
+        "Login ...".Log()
+    }
+
+
+    private fun execute() {
+
+        openAppFacebook()
+
+        Thread.sleep(3000)
+
+    }
+
 
     private var isOn = false
     private fun viewOnClick() {

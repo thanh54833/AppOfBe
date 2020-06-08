@@ -6,14 +6,18 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
+import com.example.appofbe.app.Log
+
 
 object FaceUtils {
     var appName = "Facebook"
+    var PAGE_ID_TEST = "khongsocho.official"
 
-    fun OpenAppFacebook(context: Context) {
+    fun Context.openAppFacebook() {
         val uri = "facebook:/newsfeed"
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        context.startActivity(intent)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     fun Context.isInstalledWith(name: String = appName): Boolean {
@@ -53,19 +57,78 @@ object FaceUtils {
     }
 
     // doc ... https://stackoverflow.com/questions/23493030/clearing-application-data-programmatically-android
-    /*fun Context.clearAppData(packageName: String = getPackageWith()) {
-        try {
-            // clearing app data
-            val runtime = Runtime.getRuntime()
-            "pm clear $packageName HERE".Log()
-            runtime.exec("pm clear $packageName HERE")
-        } catch (e: Exception) {
-            "error : ${e.message} ".Log()
-            e.printStackTrace()
-        }
-    }*/
-
     fun login() {
 
     }
+
+    //method to open page facebook with id page ...
+    fun Context.openPageWith(id: String = PAGE_ID_TEST) {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.data = Uri.parse(getFacebookPageURL(id))
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+
+    //method to get the right URL to use in the intent ..  path : =https://stackoverflow.com/questions/34564211/open-facebook-page-in-facebook-app-if-installed-on-android/34564284
+    fun Context.getFacebookPageURL(idPage: String = PAGE_ID_TEST): String? {
+        val packageManager = packageManager
+        return try {
+            val versionCode = packageManager.getPackageInfo(getPackageWith(), 0).versionCode
+            if (versionCode >= 3002850 || !Utils.isNumber(idPage)) { //newer versions of fb app
+                "fb://facewebmodal/f?href=https://www.facebook.com/${idPage}"
+            } else { //older versions of fb app
+                "fb://page/$idPage"
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            "error message : ${e.message}".Log()
+            idPage
+        }
+    }
+
+    // check app install with package name ...
+    fun Context.isAppInstalled(packageName: String = "com.facebook.katana"): Boolean {
+        return try {
+            packageManager.getApplicationInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
+}
+
+object Utils {
+    fun isNumber(str: String): Boolean {
+        var i = 0
+        val len = str.length
+        var a = false
+        var b = false
+        var c = false
+        var d = false
+        if (i < len && (str[i] == '+' || str[i] == '-')) i++
+        while (i < len && isDigit(str[i])) {
+            i++
+            a = true
+        }
+        if (i < len && str[i] == '.') i++
+        while (i < len && isDigit(str[i])) {
+            i++
+            b = true
+        }
+        if (i < len && (str[i] == 'e' || str[i] == 'E') && (a || b)) {
+            i++
+            c = true
+        }
+        if (i < len && (str[i] == '+' || str[i] == '-') && c) i++
+        while (i < len && isDigit(str[i])) {
+            i++
+            d = true
+        }
+        return i == len && (a || b) && (!c || c && d)
+    }
+
+    private fun isDigit(c: Char): Boolean {
+        return c in '0'..'9'
+    }
+
 }

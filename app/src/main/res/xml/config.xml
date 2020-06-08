@@ -1,8 +1,25 @@
-<accessibility-service
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:accessibilityEventTypes="typeAllMask"
-    android:accessibilityFeedbackType="feedbackGeneric"
     android:accessibilityFlags="flagDefault"
     android:canPerformGestures="true"
     android:description="@string/accessibility_service_description"
-    android:packageNames="com.github.nestorm001.autoclicker"/>
+    android:accessibilityFeedbackType="feedbackAllMask"
+    android:canRetrieveWindowContent="true" />
+
+    <!--typeAllMask-->
+    <!--android:accessibilityFeedbackType="feedbackGeneric"-->
+    <!-- android:packageNames="com.example.appofbe.app" -->
+
+    <!--Change...-->
+    <!--<?xml version="1.0" encoding="utf-8"?>
+    <accessibility-service
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeContextClicked|typeViewClicked"
+    android:packageNames="com.example.andres.eventcapture"
+    android:accessibilityFlags="flagRequestFilterKeyEvents"
+    android:accessibilityFeedbackType="feedbackAllMask"
+    android:notificationTimeout="50"
+    android:canRetrieveWindowContent="true"
+    android:settingsActivity=""
+    android:canRequestFilterKeyEvents="true"
+    />-->

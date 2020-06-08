@@ -12,37 +12,54 @@ import android.view.accessibility.AccessibilityManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.appofbe.R
-import com.example.appofbe.databinding.MainActBinding
-import com.example.appofbe.auto.logd
 import com.example.appofbe.auto.service.FloatingClickService
 import com.example.appofbe.auto.service.autoClickService
 import com.example.appofbe.auto.shortToast
+import com.example.appofbe.databinding.MainActBinding
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+
 
 class MainAct : AppCompatActivity() {
-
     lateinit var binding: MainActBinding
     private var serviceIntent: Intent? = null
 
     companion object {
         private const val PERMISSION_CODE = 110
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this@MainAct, R.layout.main_act)
         //clearAppData()
         binding.start.setOnClickListener {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
-                || Settings.canDrawOverlays(this)
-            ) {
+
+        }
+        binding.root.setOnClickListener {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || Settings.canDrawOverlays(this)) {
                 serviceIntent = Intent(this@MainAct, FloatingClickService::class.java)
                 startService(serviceIntent)
-                onBackPressed()
+                //onBackPressed()
             } else {
                 askPermission()
                 shortToast("You need System Alert Window Permission to do this")
             }
         }
+        //Todo : test runnable ...
+        //Test.fixedThreadPoolExample()//singleThreadPoolExample()
+        //openAppFacebook()
+        //openPageWith()
+        //val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getFacebookPageURL()))
+
+        /*"${getFacebookPageURL("khongsocho.official")}".Log()
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(getFacebookPageURL("khongsocho.official"))
+        )
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)*/
     }
+
 
     private fun checkAccess(): Boolean {
         val string = getString(R.string.accessibility_service_id)
@@ -54,7 +71,9 @@ class MainAct : AppCompatActivity() {
                 return true
             }
         }
+        //Todo : Thanh test ...
         return false
+        //return true
     }
 
     override fun onResume() {
@@ -78,6 +97,7 @@ class MainAct : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
         serviceIntent?.let {
             stopService(it)
         }
@@ -86,6 +106,49 @@ class MainAct : AppCompatActivity() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return it.disableSelf()
             autoClickService = null
         }
-        super.onDestroy()
+    }
+}
+
+object Test {
+    class RequestHandler(var name: String) : Runnable {
+        override fun run() {
+            try {
+                // Bắt đầu xử lý request đến
+                "${(Thread.currentThread().name + " Starting process " + name)}".Log()
+                // cho ngủ 500 milis để ví dụ là quá trình xử lý mất 0,5 s
+                Thread.sleep(500)
+                // Kết thúc xử lý request
+                "${(Thread.currentThread().name + " Finished process " + name)}".Log()
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+        }
+
+    }
+
+    fun singleThreadPoolExample() {
+        val executor: ExecutorService = Executors.newSingleThreadExecutor()
+        // Có 100 request tới cùng lúc
+        // Có 100 request tới cùng lúc
+        for (i in 0..99) {
+            executor.execute(RequestHandler("request-$i"))
+        }
+        executor.shutdown() // Không cho threadpool nhận thêm nhiệm vụ nào nữa
+        while (!executor.isTerminated) {
+            // Chờ xử lý hết các request còn chờ trong Queue ...
+        }
+    }
+
+    fun fixedThreadPoolExample() {
+        val executor = Executors.newFixedThreadPool(5)
+        // Có 100 request tới cùng lúc
+        // Có 100 request tới cùng lúc
+        for (i in 0..99) {
+            executor.execute(RequestHandler("request-$i"))
+        }
+        executor.shutdown() // Không cho threadpool nhận thêm nhiệm vụ nào nữa
+        while (!executor.isTerminated) {
+            // Chờ xử lý hết các request còn chờ trong Queue ...
+        }
     }
 }
