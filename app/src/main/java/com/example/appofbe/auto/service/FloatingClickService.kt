@@ -87,8 +87,9 @@ class FloatingClickService : Service() {
     private fun execute() {
 
         openAppFacebook()
-
         Thread.sleep(3000)
+
+
 
     }
 

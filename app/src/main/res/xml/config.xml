@@ -1,15 +1,17 @@
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:accessibilityEventTypes="typeAllMask"
-    android:accessibilityFlags="flagDefault"
+
     android:canPerformGestures="true"
     android:description="@string/accessibility_service_description"
     android:accessibilityFeedbackType="feedbackAllMask"
-    android:canRetrieveWindowContent="true" />
+    android:accessibilityFlags="flagReportViewIds"
+    android:canRetrieveWindowContent="true"
+    android:notificationTimeout="500" />
 
+    <!-- android:accessibilityFlags="flagDefault"-->
     <!--typeAllMask-->
     <!--android:accessibilityFeedbackType="feedbackGeneric"-->
     <!-- android:packageNames="com.example.appofbe.app" -->
-
     <!--Change...-->
     <!--<?xml version="1.0" encoding="utf-8"?>
     <accessibility-service
@@ -22,4 +24,18 @@
     android:canRetrieveWindowContent="true"
     android:settingsActivity=""
     android:canRequestFilterKeyEvents="true"
+
+    />-->
+
+    <!--path :== https://stackoverflow.com/questions/44275008/using-android-accessibilityservice-getwindows-to-get-a-list-of-view-elements-o-->
+    <!--<accessibility-service
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/accessibility_service_description"
+    android:accessibilityEventTypes="typeAllMask"
+    android:accessibilityFlags="flagReportViewIds"
+    android:canRetrieveWindowContent="true"
+    android:canRequestTouchExplorationMode="true"
+    android:accessibilityFeedbackType="feedbackSpoken"
+    android:notificationTimeout="100"
+    android:settingsActivity="com.yourpackage.MyServiceSettingsActivity"
     />-->

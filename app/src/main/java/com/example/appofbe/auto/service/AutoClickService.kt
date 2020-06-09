@@ -37,11 +37,11 @@ class AutoClickService : AccessibilityService() {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         //"event type : ${event?.eventType} ".Log()
-        //"event type : ...${event?.eventType}".Log()
         when {
             (event?.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) or (event?.eventType == AccessibilityEvent.TYPE_VIEW_FOCUSED) -> {
                 //"On_CLick...".Log()
                 val nodeInfo = event?.source
+                //nodeInfo?.contentDescription
                 takeIf { (nodeInfo?.className == "android.widget.EditText") }?.apply {
                     val arguments = Bundle()
                     arguments.putCharSequence(
@@ -53,7 +53,36 @@ class AutoClickService : AccessibilityService() {
                 }
             }
         }
+
+        //Todo : code log id screen ...
+        if ((rootInActiveWindow?.childCount ?: 0) >= 1) {
+            //"windown :...  ${rootInActiveWindow.childCount} ${rootInActiveWindow.getChild(0).className}".Log()
+            //logViewHierarchy(rootInActiveWindow, 0)
+        }
+
+        //Todo : Chup anh man hinh và filter ...
+
+
+
+
+
     }
+
+
+    private fun logViewHierarchy(nodeInfo: AccessibilityNodeInfo?, depth: Int) {
+        nodeInfo?.apply {
+            var spacerString = ""
+            for (i in 0 until depth) {
+                spacerString += '-'
+            }
+            //Log the info you care about here... I choce classname and view resource name, because they are simple, but interesting.
+            "logViewHierarchy :: ${spacerString + className} ${viewIdResourceName} ".Log()
+            for (i in 0 until childCount) {
+                logViewHierarchy(getChild(i), depth + 1)
+            }
+        } ?: run { return }
+    }
+
 
     fun click(x: Int, y: Int) {
         "click $x $y".logd()
