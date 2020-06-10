@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.PixelFormat
+import android.media.projection.MediaProjection
 import android.os.Build
 import android.os.IBinder
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import com.example.appofbe.R
 import com.example.appofbe.app.Log
 import com.example.appofbe.auto.TouchAndDragListener
 import com.example.appofbe.auto.dp2px
+import com.example.appofbe.capture.ImageTransmogrifier
+import com.example.appofbe.capture.ScreenshotService
 import com.example.appofbe.facebook_utils.FaceUtils.openAppFacebook
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
@@ -59,10 +62,10 @@ class FloatingClickService : Service() {
         )
         //getting windows services and adding the floating view to it
         manager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        manager.addView(view, params)
+        //manager.addView(view, params)
 
         //adding an touchlistener to make drag movement of the floating widget
-        view.setOnTouchListener(
+        /*view.setOnTouchListener(
             TouchAndDragListener(
                 params,
                 startDragDistance,
@@ -71,9 +74,9 @@ class FloatingClickService : Service() {
                     //login()
                 },
                 { manager.updateViewLayout(view, params) })
-        )
+        )*/
         // login()
-        //execute()
+        execute()
     }
 
     private fun login() {
@@ -87,12 +90,11 @@ class FloatingClickService : Service() {
     private fun execute() {
 
         openAppFacebook()
-        Thread.sleep(3000)
 
+        Thread.sleep(1000)
 
 
     }
-
 
     private var isOn = false
     private fun viewOnClick() {

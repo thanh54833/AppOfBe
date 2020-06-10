@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Path
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.example.appofbe.app.Log
@@ -41,6 +42,9 @@ class AutoClickService : AccessibilityService() {
             (event?.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) or (event?.eventType == AccessibilityEvent.TYPE_VIEW_FOCUSED) -> {
                 //"On_CLick...".Log()
                 val nodeInfo = event?.source
+
+                "nodeInfo description : ${nodeInfo?.describeContents()} ${nodeInfo?.contentDescription} ".Log()
+
                 //nodeInfo?.contentDescription
                 takeIf { (nodeInfo?.className == "android.widget.EditText") }?.apply {
                     val arguments = Bundle()
@@ -57,17 +61,43 @@ class AutoClickService : AccessibilityService() {
         //Todo : code log id screen ...
         if ((rootInActiveWindow?.childCount ?: 0) >= 1) {
             //"windown :...  ${rootInActiveWindow.childCount} ${rootInActiveWindow.getChild(0).className}".Log()
-            //logViewHierarchy(rootInActiveWindow, 0)
+            logViewHierarchy(rootInActiveWindow, 0)
         }
 
+
+        //fillEdit("Username", "phamhoaithanh32@gmail.com")
+
+        //fillEdit("Password", "thanh54833Lumia520")
+
+        interactClick("Log In")
+
         //Todo : Chup anh man hinh và filter ...
-
-
-
-
-
     }
 
+    private fun fillEdit(key: String, value: String) {
+        rootInActiveWindow.findAccessibilityNodeInfosByText(key).firstOrNull()?.let { _info ->
+
+            " value : ${_info.text}".Log()
+
+            if (TextUtils.isEmpty(_info.text) || true) {
+                val arguments = Bundle()
+                arguments.putCharSequence(
+                    AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, value
+                )
+                _info.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)
+                _info.performAction(AccessibilityNodeInfo.ACTION_NEXT_AT_MOVEMENT_GRANULARITY)
+            }
+        }
+    }
+
+    private fun interactClick(key: String) {
+
+        "size :==  ${rootInActiveWindow.findAccessibilityNodeInfosByText(key).size}".Log()
+        //rootInActiveWindow.fin
+        rootInActiveWindow.findAccessibilityNodeInfosByText(key).firstOrNull()?.let { _info ->
+            _info.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+        }
+    }
 
     private fun logViewHierarchy(nodeInfo: AccessibilityNodeInfo?, depth: Int) {
         nodeInfo?.apply {
@@ -76,7 +106,7 @@ class AutoClickService : AccessibilityService() {
                 spacerString += '-'
             }
             //Log the info you care about here... I choce classname and view resource name, because they are simple, but interesting.
-            "logViewHierarchy :: ${spacerString + className} ${viewIdResourceName} ".Log()
+            "logViewHierarchy :: ${spacerString + className }  ${viewIdResourceName} ${contentDescription}".Log()
             for (i in 0 until childCount) {
                 logViewHierarchy(getChild(i), depth + 1)
             }
