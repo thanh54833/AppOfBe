@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.PixelFormat
-import android.media.projection.MediaProjection
 import android.os.Build
 import android.os.IBinder
 import android.view.LayoutInflater
@@ -14,10 +13,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import com.example.appofbe.R
 import com.example.appofbe.app.Log
-import com.example.appofbe.auto.TouchAndDragListener
 import com.example.appofbe.auto.dp2px
-import com.example.appofbe.capture.ImageTransmogrifier
-import com.example.appofbe.capture.ScreenshotService
 import com.example.appofbe.facebook_utils.FaceUtils.openAppFacebook
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
@@ -90,9 +86,12 @@ class FloatingClickService : Service() {
     private fun execute() {
 
         openAppFacebook()
-
+        Thread.sleep(3000)
+        /*autoClickService?.inputEditText ("Username", "dieuhong54833@gmail.com")
         Thread.sleep(1000)
-
+        autoClickService?.inputEditText ("Password", "Lumia520")
+        Thread.sleep(1000)
+        autoClickService?.interactClick("Log In")*/
 
     }
 

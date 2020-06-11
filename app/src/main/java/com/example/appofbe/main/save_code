@@ -1,0 +1,16 @@
+
+
+ //  Tìm kiếm , lọc màn hinh ... :)
+ private fun logViewHierarchy(nodeInfo: AccessibilityNodeInfo?, depth: Int) {
+        nodeInfo?.apply {
+            var spacerString = ""
+            for (i in 0 until depth) {
+                spacerString += '-'
+            }
+            //Log the info you care about here... I choce classname and view resource name, because they are simple, but interesting.
+            for (i in 0 until childCount) {
+                logViewHierarchy(getChild(i), depth + 1)
+            }
+            "logViewHierarchy :: ${spacerString + className}  ${viewIdResourceName} ${contentDescription}".Log()
+        } ?: run { return }
+    }

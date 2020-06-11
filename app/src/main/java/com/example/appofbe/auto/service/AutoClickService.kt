@@ -28,7 +28,6 @@ class AutoClickService : AccessibilityService() {
         // NO-OP
     }
 
-
     override fun onServiceConnected() {
         super.onServiceConnected()
         "onServiceConnected".Log()
@@ -37,20 +36,15 @@ class AutoClickService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        //"event type : ${event?.eventType} ".Log()
+
         when {
             (event?.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) or (event?.eventType == AccessibilityEvent.TYPE_VIEW_FOCUSED) -> {
-                //"On_CLick...".Log()
                 val nodeInfo = event?.source
-
-                "nodeInfo description : ${nodeInfo?.describeContents()} ${nodeInfo?.contentDescription} ".Log()
-
-                //nodeInfo?.contentDescription
                 takeIf { (nodeInfo?.className == "android.widget.EditText") }?.apply {
                     val arguments = Bundle()
                     arguments.putCharSequence(
                         AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
-                        "Thanh thanh ne"
+                        "Text input ... "
                     )
                     nodeInfo?.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)
                     nodeInfo?.performAction(AccessibilityNodeInfo.ACTION_NEXT_AT_MOVEMENT_GRANULARITY)
@@ -58,27 +52,14 @@ class AutoClickService : AccessibilityService() {
             }
         }
 
-        //Todo : code log id screen ...
-        if ((rootInActiveWindow?.childCount ?: 0) >= 1) {
-            //"windown :...  ${rootInActiveWindow.childCount} ${rootInActiveWindow.getChild(0).className}".Log()
-            logViewHierarchy(rootInActiveWindow, 0)
-        }
 
+        " name : ${rootInActiveWindow.describeContents()} ${rootInActiveWindow.className} ${rootInActiveWindow.viewIdResourceName} ${rootInActiveWindow.isAccessibilityFocused}  ${rootInActiveWindow.isCheckable} ".Log()
 
-        //fillEdit("Username", "phamhoaithanh32@gmail.com")
-
-        //fillEdit("Password", "thanh54833Lumia520")
-
-        interactClick("Log In")
-
-        //Todo : Chup anh man hinh và filter ...
     }
 
-    private fun fillEdit(key: String, value: String) {
+    fun inputEditText(key: String, value: String) {
+
         rootInActiveWindow.findAccessibilityNodeInfosByText(key).firstOrNull()?.let { _info ->
-
-            " value : ${_info.text}".Log()
-
             if (TextUtils.isEmpty(_info.text) || true) {
                 val arguments = Bundle()
                 arguments.putCharSequence(
@@ -90,32 +71,31 @@ class AutoClickService : AccessibilityService() {
         }
     }
 
-    private fun interactClick(key: String) {
-
-        "size :==  ${rootInActiveWindow.findAccessibilityNodeInfosByText(key).size}".Log()
-        //rootInActiveWindow.fin
-        rootInActiveWindow.findAccessibilityNodeInfosByText(key).firstOrNull()?.let { _info ->
-            _info.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+    fun interactClick(key: String) {
+        rootInActiveWindow.findContent(key) { _nodeInfo ->
+            _nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK)
         }
     }
 
-    private fun logViewHierarchy(nodeInfo: AccessibilityNodeInfo?, depth: Int) {
-        nodeInfo?.apply {
-            var spacerString = ""
-            for (i in 0 until depth) {
-                spacerString += '-'
+    private fun AccessibilityNodeInfo?.findContent(
+        content: String,
+        depth: Int = 0,
+        result: (nodeInfo: AccessibilityNodeInfo) -> Unit = {}
+    ) {
+        this?.let { _nodeInfo ->
+            if (_nodeInfo.contentDescription?.toString()
+                    ?.equals(content, ignoreCase = true) == true
+            ) {
+                result(_nodeInfo)
+                return
             }
-            //Log the info you care about here... I choce classname and view resource name, because they are simple, but interesting.
-            "logViewHierarchy :: ${spacerString + className }  ${viewIdResourceName} ${contentDescription}".Log()
-            for (i in 0 until childCount) {
-                logViewHierarchy(getChild(i), depth + 1)
+            for (i in 0 until _nodeInfo.childCount) {
+                _nodeInfo.getChild(i).findContent(content, depth + 1, result)
             }
         } ?: run { return }
     }
 
-
     fun click(x: Int, y: Int) {
-        "click $x $y".logd()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
         val path = Path()
         path.moveTo(x.toFloat(), y.toFloat())
@@ -124,40 +104,6 @@ class AutoClickService : AccessibilityService() {
             .addStroke(GestureDescription.StrokeDescription(path, 10, 10))
             .build()
         dispatchGesture(gestureDescription, null, null)
-    }
-
-    fun setText() {
-        /*if (Build.VERSION_CODES.JELLY_BEAN_MR2 <= Build.VERSION.SDK_INT) {
-            nodeInput.refresh();
-        }
-        val response = "sometext";
-        if (Build.VERSION_CODES.LOLLIPOP <= Build.VERSION.SDK_INT) {
-            val bundle = Bundle();
-            bundle.putCharSequence(
-                AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
-                response
-            )
-            //set the text
-            nodeInput.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, bundle);
-        } else {
-            val clipboardManager = activity?.getSystemService(Context.CLIPBOARD_SERVICE)
-            if (clipboardManager != null) {
-
-                var lastClip = "";
-                val clipData = clipboardManager . getPrimaryClip ();
-
-                if (clipData != null) {
-                    lastClip = clipData.getItemAt(0).coerceToText(activity).toString();
-                }
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("label", response), response)
-                if (Build.VERSION_CODES.JELLY_BEAN_MR2 <= Build.VERSION.SDK_INT) {
-                    nodeInput.performAction(AccessibilityNodeInfo.ACTION_PASTE);
-                } else {
-                    nodeInput.performAction(AccessibilityNodeInfoCompat.ACTION_PASTE);
-                }
-                clipboardManager.setPrimaryClip(ClipData.newPlainText(lastClip, lastClip));
-            }
-        }*/
     }
 
     fun run(newEvents: MutableList<Event>) {
@@ -171,14 +117,14 @@ class AutoClickService : AccessibilityService() {
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        "AutoClickService onUnbind".logd()
+        "AutoClickService onUnbind".Log()
         autoClickService = null
         return super.onUnbind(intent)
     }
 
 
     override fun onDestroy() {
-        "AutoClickService onDestroy".logd()
+        "AutoClickService onDestroy".Log()
         autoClickService = null
         super.onDestroy()
     }
