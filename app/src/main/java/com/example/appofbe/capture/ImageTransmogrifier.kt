@@ -6,7 +6,6 @@ import android.graphics.Point
 import android.media.ImageReader
 import android.media.ImageReader.OnImageAvailableListener
 import android.view.Surface
-import com.example.appofbe.app.Log
 import java.io.ByteArrayOutputStream
 
 

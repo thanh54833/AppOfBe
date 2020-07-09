@@ -59,8 +59,7 @@ class ScreenshotService : Service() {
     }
 
     override fun onStartCommand(i: Intent, flags: Int, startId: Int): Int {
-        //buildPendingIntent(ACTION_RECORD)
-        //startCapture()
+
         "i.action ${i.action}  ${resultData} ${resultData != null}".Log()
 
         resultCode = i.getIntExtra(EXTRA_RESULT_CODE, 1337)
@@ -68,14 +67,6 @@ class ScreenshotService : Service() {
 
         startCapture()
 
-
-        /*if (ACTION_RECORD == i.action) {
-
-        } else if (ACTION_SHUTDOWN == i.action) {
-            beeper.startTone(ToneGenerator.TONE_PROP_NACK)
-            stopForeground(true)
-            stopSelf()
-        }*/
 
         return START_NOT_STICKY
     }
@@ -155,7 +146,6 @@ class ScreenshotService : Service() {
         )
         projection?.registerCallback(cb, handler)
     }
-
 
     companion object {
         private const val CHANNEL_WHATEVER = "channel_whatever"

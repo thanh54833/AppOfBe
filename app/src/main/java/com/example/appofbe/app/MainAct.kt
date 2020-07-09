@@ -104,9 +104,8 @@ class MainAct : AppCompatActivity() {
             }
         }
         //Todo : Thanh test ...
-        return false
-
-        //return true
+        //return false
+        return true
     }
 
     override fun onResume() {

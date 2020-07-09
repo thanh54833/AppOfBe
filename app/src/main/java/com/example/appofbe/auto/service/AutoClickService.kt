@@ -36,7 +36,6 @@ class AutoClickService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-
         when {
             (event?.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) or (event?.eventType == AccessibilityEvent.TYPE_VIEW_FOCUSED) -> {
                 val nodeInfo = event?.source
@@ -51,10 +50,7 @@ class AutoClickService : AccessibilityService() {
                 }
             }
         }
-
-
-        " name : ${rootInActiveWindow.describeContents()} ${rootInActiveWindow.className} ${rootInActiveWindow.viewIdResourceName} ${rootInActiveWindow.isAccessibilityFocused}  ${rootInActiveWindow.isCheckable} ".Log()
-
+        //" name : ${rootInActiveWindow.describeContents()} ${rootInActiveWindow.className} ${rootInActiveWindow.viewIdResourceName} ${rootInActiveWindow.isAccessibilityFocused}  ${rootInActiveWindow.isCheckable} ".Log()
     }
 
     fun inputEditText(key: String, value: String) {
