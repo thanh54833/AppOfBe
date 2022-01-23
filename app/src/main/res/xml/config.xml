@@ -11,7 +11,7 @@
     <!-- android:accessibilityFlags="flagDefault"-->
     <!--typeAllMask-->
     <!--android:accessibilityFeedbackType="feedbackGeneric"-->
-    <!-- android:packageNames="com.example.appofbe.app" -->
+    <!-- android:packageNames="com.example.appofbe.features.app" -->
     <!--Change...-->
     <!--<?xml version="1.0" encoding="utf-8"?>
     <accessibility-service

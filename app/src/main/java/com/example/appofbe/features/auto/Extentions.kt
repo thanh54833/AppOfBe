@@ -1,4 +1,4 @@
-package com.example.appofbe.auto
+package com.example.appofbe.features.auto
 
 import android.content.Context
 import android.util.Log

@@ -1,4 +1,4 @@
-package com.example.appofbe.auto.bean
+package com.example.appofbe.features.auto.bean
 
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path

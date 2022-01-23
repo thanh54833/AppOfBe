@@ -1,4 +1,4 @@
-package com.example.appofbe.capture
+package com.example.appofbe.features.capture
 
 
 /***
@@ -31,7 +31,7 @@ import android.os.Process
 import android.util.Log
 import android.view.WindowManager
 import androidx.annotation.Nullable
-import com.example.appofbe.app.Log
+import com.example.appofbe.features.app.Log
 import java.io.File
 import java.io.FileOutputStream
 

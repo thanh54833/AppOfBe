@@ -1,4 +1,4 @@
-package com.example.appofbe.auto.service
+package com.example.appofbe.features.auto.service
 
 import android.app.Service
 import android.content.Context
@@ -12,9 +12,9 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import com.example.appofbe.R
-import com.example.appofbe.app.Log
-import com.example.appofbe.auto.dp2px
-import com.example.appofbe.facebook_utils.FaceUtils.openAppFacebook
+import com.example.appofbe.features.app.Log
+import com.example.appofbe.features.auto.dp2px
+import com.example.appofbe.features.facebook_utils.FaceUtils.openAppFacebook
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
 
@@ -85,8 +85,11 @@ class FloatingClickService : Service() {
 
     private fun execute() {
 
+        "execute :..".Log();
         openAppFacebook()
-        Thread.sleep(3000)
+
+        //Thread.sleep(3000)
+
         /*autoClickService?.inputEditText ("Username", "dieuhong54833@gmail.com")
         Thread.sleep(1000)
         autoClickService?.inputEditText ("Password", "Lumia520")

@@ -1,4 +1,4 @@
-package com.example.appofbe.capture
+package com.example.appofbe.features.capture
 
 import android.graphics.Bitmap
 import android.graphics.PixelFormat

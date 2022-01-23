@@ -1,4 +1,4 @@
-package com.example.appofbe.app
+package com.example.appofbe.features.app
 
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.annotation.TargetApi
@@ -13,10 +13,10 @@ import android.view.accessibility.AccessibilityManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.appofbe.R
-import com.example.appofbe.auto.service.FloatingClickService
-import com.example.appofbe.auto.service.autoClickService
-import com.example.appofbe.auto.shortToast
-import com.example.appofbe.capture.ScreenshotService
+import com.example.appofbe.features.auto.service.FloatingClickService
+import com.example.appofbe.features.auto.service.autoClickService
+import com.example.appofbe.features.auto.shortToast
+import com.example.appofbe.features.capture.ScreenshotService
 import com.example.appofbe.databinding.MainActBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -34,11 +34,8 @@ class MainAct : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this@MainAct, R.layout.main_act)
-        //clearAppData()
-        binding.start.setOnClickListener {
 
-        }
-        binding.root.setOnClickListener {
+        binding.start.setOnClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || Settings.canDrawOverlays(this)) {
                 serviceIntent = Intent(this@MainAct, FloatingClickService::class.java)
                 startService(serviceIntent)
@@ -48,6 +45,7 @@ class MainAct : AppCompatActivity() {
                 shortToast("You need System Alert Window Permission to do this")
             }
         }
+
         //Todo : test runnable ...
         //Test.fixedThreadPoolExample()//singleThreadPoolExample()
         //openAppFacebook()
@@ -81,7 +79,6 @@ class MainAct : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_SCREENSHOT) {
             if (resultCode == Activity.RESULT_OK) {
-
                 val i = Intent(this, ScreenshotService::class.java)
                     .putExtra(ScreenshotService.EXTRA_RESULT_CODE, resultCode)
                     .putExtra(ScreenshotService.EXTRA_RESULT_INTENT, data)

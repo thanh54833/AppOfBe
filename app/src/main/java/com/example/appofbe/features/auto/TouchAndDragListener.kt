@@ -1,10 +1,9 @@
-package com.example.appofbe.auto
+package com.example.appofbe.features.auto
 
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import com.example.appofbe.auto.Action
 
 /**
  * Created on 2018/9/30.

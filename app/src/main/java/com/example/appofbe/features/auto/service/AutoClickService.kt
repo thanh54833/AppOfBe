@@ -1,4 +1,4 @@
-package com.example.appofbe.auto.service
+package com.example.appofbe.features.auto.service
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
@@ -9,10 +9,10 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import com.example.appofbe.app.Log
-import com.example.appofbe.app.MainAct
-import com.example.appofbe.auto.bean.Event
-import com.example.appofbe.auto.logd
+import com.example.appofbe.features.app.Log
+import com.example.appofbe.features.app.MainAct
+import com.example.appofbe.features.auto.bean.Event
+import com.example.appofbe.features.auto.logd
 
 
 /**
