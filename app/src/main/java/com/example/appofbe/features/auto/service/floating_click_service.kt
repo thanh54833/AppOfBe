@@ -1,5 +1,6 @@
 package com.example.appofbe.features.auto.service
 
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -22,7 +23,7 @@ import kotlin.concurrent.fixedRateTimer
  * Created on 2018/9/28.
  * By nesto
  */
-class floating_click_service : Service() {
+class FloatingClickService : Service() {
     private lateinit var manager: WindowManager
     private lateinit var view: View
     private lateinit var params: WindowManager.LayoutParams
@@ -36,6 +37,7 @@ class floating_click_service : Service() {
         return null
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreate() {
         super.onCreate()
         startDragDistance = dp2px(10f)

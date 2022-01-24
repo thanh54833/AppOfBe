@@ -31,7 +31,7 @@ import android.os.Process
 import android.util.Log
 import android.view.WindowManager
 import androidx.annotation.Nullable
-import com.example.appofbe.features.app.Log
+import com.example.appofbe.features.utils.Log
 import java.io.File
 import java.io.FileOutputStream
 
@@ -59,15 +59,11 @@ class ScreenshotService : Service() {
     }
 
     override fun onStartCommand(i: Intent, flags: Int, startId: Int): Int {
-
         "i.action ${i.action}  ${resultData} ${resultData != null}".Log()
-
         resultCode = i.getIntExtra(EXTRA_RESULT_CODE, 1337)
         resultData = i.getParcelableExtra(EXTRA_RESULT_INTENT)
 
         startCapture()
-
-
         return START_NOT_STICKY
     }
 

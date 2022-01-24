@@ -1,5 +1,6 @@
 package com.example.appofbe.features.auto
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
 import android.widget.Toast
@@ -11,7 +12,6 @@ import androidx.annotation.StringRes
  * By nesto
  */
 private var toast: Toast? = null
-
 private fun Context.showToast(text: String, @Duration length: Int = Toast.LENGTH_SHORT) {
     //先检查是否在主线程中运行，再进行处理
     if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -26,25 +26,11 @@ private fun Context.showToast(text: String, @Duration length: Int = Toast.LENGTH
     }
 }
 
-internal fun Context.errorToast(e: Throwable) {
-    showToast(e.localizedMessage)
-}
-
-internal fun Context.longToast(text: String) {
-    showToast(text, Toast.LENGTH_LONG)
-}
-
-internal fun Context.longToast(@StringRes id: Int) {
-    showToast(getString(id), Toast.LENGTH_LONG)
-}
 
 internal fun Context.shortToast(text: String) {
     showToast(text)
 }
 
-internal fun Context.shortToast(@StringRes id: Int) {
-    shortToast(getString(id))
-}
 
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @kotlin.annotation.Retention(AnnotationRetention.SOURCE)

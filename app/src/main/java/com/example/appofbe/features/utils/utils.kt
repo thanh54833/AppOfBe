@@ -1,11 +1,10 @@
-package com.example.appofbe.features.app
+package com.example.appofbe.features.utils
 
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
 
 class Utils {
-
 
 }
 

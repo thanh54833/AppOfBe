@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Path
 import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.example.appofbe.features.app.MainAct
@@ -21,9 +20,8 @@ import com.example.appofbe.features.utils.Log
  */
 
 var autoClickService: AutoClickService? = null
-
 class AutoClickService : AccessibilityService() {
-    internal val events = mutableListOf<Event>()
+    private val events = mutableListOf<Event>()
     override fun onInterrupt() {
         // NO-OP
     }
@@ -54,20 +52,17 @@ class AutoClickService : AccessibilityService() {
     }
 
     fun inputEditText(key: String, value: String) {
-
         rootInActiveWindow.findAccessibilityNodeInfosByText(key).firstOrNull()?.let { _info ->
-            if (TextUtils.isEmpty(_info.text) || true) {
-                val arguments = Bundle()
-                arguments.putCharSequence(
-                    AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, value
-                )
-                _info.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)
-                _info.performAction(AccessibilityNodeInfo.ACTION_NEXT_AT_MOVEMENT_GRANULARITY)
-            }
+            val arguments = Bundle()
+            arguments.putCharSequence(
+                AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, value
+            )
+            _info.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)
+            _info.performAction(AccessibilityNodeInfo.ACTION_NEXT_AT_MOVEMENT_GRANULARITY)
         }
     }
 
-    fun interactClick(key: String) {
+    fun addPress(key: String) {
         rootInActiveWindow.findContent(key) { _nodeInfo ->
             _nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK)
         }

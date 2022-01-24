@@ -13,7 +13,7 @@ import android.view.accessibility.AccessibilityManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.appofbe.R
-import com.example.appofbe.features.auto.service.floating_click_service
+import com.example.appofbe.features.auto.service.FloatingClickService
 import com.example.appofbe.features.auto.service.autoClickService
 import com.example.appofbe.features.auto.shortToast
 import com.example.appofbe.features.capture.ScreenshotService
@@ -39,7 +39,7 @@ class MainAct : AppCompatActivity() {
         /// detect onClick start
         binding.start.setOnClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || Settings.canDrawOverlays(this)) {
-                serviceIntent = Intent(this@MainAct, floating_click_service::class.java)
+                serviceIntent = Intent(this@MainAct, FloatingClickService::class.java)
                 startService(serviceIntent)
             } else {
                 askPermission()
