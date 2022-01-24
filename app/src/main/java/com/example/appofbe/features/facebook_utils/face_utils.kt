@@ -6,8 +6,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
-import com.example.appofbe.features.app.Log
-
+import com.example.appofbe.features.utils.Log
 
 object FaceUtils {
     var appName = "Facebook"

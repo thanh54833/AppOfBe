@@ -13,11 +13,12 @@ import android.view.accessibility.AccessibilityManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.appofbe.R
-import com.example.appofbe.features.auto.service.FloatingClickService
+import com.example.appofbe.features.auto.service.floating_click_service
 import com.example.appofbe.features.auto.service.autoClickService
 import com.example.appofbe.features.auto.shortToast
 import com.example.appofbe.features.capture.ScreenshotService
 import com.example.appofbe.databinding.MainActBinding
+import com.example.appofbe.features.utils.Log
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -35,41 +36,19 @@ class MainAct : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this@MainAct, R.layout.main_act)
 
+        /// detect onClick start
         binding.start.setOnClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || Settings.canDrawOverlays(this)) {
-                serviceIntent = Intent(this@MainAct, FloatingClickService::class.java)
+                serviceIntent = Intent(this@MainAct, floating_click_service::class.java)
                 startService(serviceIntent)
-                //onBackPressed()
             } else {
                 askPermission()
                 shortToast("You need System Alert Window Permission to do this")
             }
         }
 
-        //Todo : test runnable ...
-        //Test.fixedThreadPoolExample()//singleThreadPoolExample()
-        //openAppFacebook()
-        //openPageWith()
-        //val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getFacebookPageURL()))
-
-        /*"${getFacebookPageURL("khongsocho.official")}".Log()
-        val intent = Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse(getFacebookPageURL("khongsocho.official"))
-        )
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)*/
-
-        /*val service = Intent(this@MainAct, ScreenshotService::class.java).apply {
-            putExtra(ScreenshotService.EXTRA_RESULT_CODE, "")
-            putExtra(ScreenshotService.EXTRA_RESULT_INTENT, "")
-        }
-        startService(service)*/
-
-        //val mgr = getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-        //startActivityForResult(mgr.createScreenCaptureIntent(), REQUEST_SCREENSHOT);
-
     }
+
 
     override fun onActivityResult(
         requestCode: Int,
@@ -90,7 +69,18 @@ class MainAct : AppCompatActivity() {
     }
 
 
-    private fun checkAccess(): Boolean {
+    override fun onResume() {
+        super.onResume()
+        val hasPermission = isEnableAccessibility()
+        if (!hasPermission) {
+            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            askPermission()
+        }
+    }
+
+    private fun isEnableAccessibility(): Boolean {
         val string = getString(R.string.accessibility_service_id)
         val manager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
         val list =
@@ -100,21 +90,9 @@ class MainAct : AppCompatActivity() {
                 return true
             }
         }
-        //Todo : Thanh test ...
-        //return false
-        return true
+        return false
     }
 
-    override fun onResume() {
-        super.onResume()
-        val hasPermission = checkAccess()
-        if (!hasPermission) {
-            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            askPermission()
-        }
-    }
 
     @TargetApi(Build.VERSION_CODES.M)
     private fun askPermission() {
@@ -124,6 +102,7 @@ class MainAct : AppCompatActivity() {
         )
         startActivityForResult(intent, PERMISSION_CODE)
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -143,11 +122,11 @@ object Test {
         override fun run() {
             try {
                 // Bắt đầu xử lý request đến
-                "${(Thread.currentThread().name + " Starting process " + name)}".Log()
+                (Thread.currentThread().name + " Starting process " + name).Log()
                 // cho ngủ 500 milis để ví dụ là quá trình xử lý mất 0,5 s
                 Thread.sleep(500)
                 // Kết thúc xử lý request
-                "${(Thread.currentThread().name + " Finished process " + name)}".Log()
+                (Thread.currentThread().name + " Finished process " + name).Log()
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }

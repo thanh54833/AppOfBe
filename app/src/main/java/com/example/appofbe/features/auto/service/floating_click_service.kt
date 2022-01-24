@@ -12,18 +12,17 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import com.example.appofbe.R
-import com.example.appofbe.features.app.Log
 import com.example.appofbe.features.auto.dp2px
 import com.example.appofbe.features.facebook_utils.FaceUtils.openAppFacebook
+import com.example.appofbe.features.utils.Log
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
-
 
 /**
  * Created on 2018/9/28.
  * By nesto
  */
-class FloatingClickService : Service() {
+class floating_click_service : Service() {
     private lateinit var manager: WindowManager
     private lateinit var view: View
     private lateinit var params: WindowManager.LayoutParams
