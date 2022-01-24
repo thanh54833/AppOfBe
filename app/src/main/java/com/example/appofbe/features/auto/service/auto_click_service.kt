@@ -22,9 +22,6 @@ import com.example.appofbe.features.utils.Log
 var autoClickService: AutoClickService? = null
 class AutoClickService : AccessibilityService() {
     private val events = mutableListOf<Event>()
-    override fun onInterrupt() {
-        // NO-OP
-    }
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -48,64 +45,17 @@ class AutoClickService : AccessibilityService() {
                 }
             }
         }
+        rootInActiveWindow
+        dispatchGesture()
+
         //" name : ${rootInActiveWindow.describeContents()} ${rootInActiveWindow.className} ${rootInActiveWindow.viewIdResourceName} ${rootInActiveWindow.isAccessibilityFocused}  ${rootInActiveWindow.isCheckable} ".Log()
     }
 
-    fun inputEditText(key: String, value: String) {
-        rootInActiveWindow.findAccessibilityNodeInfosByText(key).firstOrNull()?.let { _info ->
-            val arguments = Bundle()
-            arguments.putCharSequence(
-                AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, value
-            )
-            _info.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)
-            _info.performAction(AccessibilityNodeInfo.ACTION_NEXT_AT_MOVEMENT_GRANULARITY)
-        }
+    override fun onInterrupt() {
+        //TODO("Not yet implemented")
     }
 
-    fun addPress(key: String) {
-        rootInActiveWindow.findContent(key) { _nodeInfo ->
-            _nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-        }
-    }
 
-    private fun AccessibilityNodeInfo?.findContent(
-        content: String,
-        depth: Int = 0,
-        result: (nodeInfo: AccessibilityNodeInfo) -> Unit = {}
-    ) {
-        this?.let { _nodeInfo ->
-            if (_nodeInfo.contentDescription?.toString()
-                    ?.equals(content, ignoreCase = true) == true
-            ) {
-                result(_nodeInfo)
-                return
-            }
-            for (i in 0 until _nodeInfo.childCount) {
-                _nodeInfo.getChild(i).findContent(content, depth + 1, result)
-            }
-        } ?: run { return }
-    }
-
-    fun click(x: Int, y: Int) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
-        val path = Path()
-        path.moveTo(x.toFloat(), y.toFloat())
-        val builder = GestureDescription.Builder()
-        val gestureDescription = builder
-            .addStroke(GestureDescription.StrokeDescription(path, 10, 10))
-            .build()
-        dispatchGesture(gestureDescription, null, null)
-    }
-
-    fun run(newEvents: MutableList<Event>) {
-        events.clear()
-        events.addAll(newEvents)
-        events.toString().logd()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
-        val builder = GestureDescription.Builder()
-        events.forEach { builder.addStroke(it.onEvent()) }
-        dispatchGesture(builder.build(), null, null)
-    }
 
     override fun onUnbind(intent: Intent?): Boolean {
         "AutoClickService onUnbind".Log()
