@@ -4,9 +4,6 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 
-class Utils {
-
-}
 
 fun String.Log(message: String = "Log") {
     Log.i("===", "${message} : ${this}")

@@ -1,18 +1,13 @@
 package com.example.appofbe.features.auto.service
 
 import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.GestureDescription
 import android.content.Intent
-import android.graphics.Path
-import android.os.Build
 import android.os.Bundle
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.example.appofbe.features.app.MainAct
 import com.example.appofbe.features.auto.bean.Event
-import com.example.appofbe.features.auto.logd
-import com.example.appofbe.features.utils.Log
-
+import kotlin.concurrent.timer
 
 /**
  * Created on 2018/9/28.
@@ -20,12 +15,12 @@ import com.example.appofbe.features.utils.Log
  */
 
 var autoClickService: AutoClickService? = null
+
 class AutoClickService : AccessibilityService() {
     private val events = mutableListOf<Event>()
 
     override fun onServiceConnected() {
         super.onServiceConnected()
-        "onServiceConnected".Log()
         autoClickService = this
         startActivity(Intent(this, MainAct::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
@@ -45,7 +40,6 @@ class AutoClickService : AccessibilityService() {
                 }
             }
         }
-
         //" name : ${rootInActiveWindow.describeContents()} ${rootInActiveWindow.className} ${rootInActiveWindow.viewIdResourceName} ${rootInActiveWindow.isAccessibilityFocused}  ${rootInActiveWindow.isCheckable} ".Log()
     }
 
@@ -54,16 +48,13 @@ class AutoClickService : AccessibilityService() {
     }
 
 
-
     override fun onUnbind(intent: Intent?): Boolean {
-        "AutoClickService onUnbind".Log()
         autoClickService = null
         return super.onUnbind(intent)
     }
 
 
     override fun onDestroy() {
-        "AutoClickService onDestroy".Log()
         autoClickService = null
         super.onDestroy()
     }

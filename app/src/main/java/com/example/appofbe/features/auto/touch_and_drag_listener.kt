@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import com.example.appofbe.features.auto.action.Action
 import kotlin.math.pow
 
 /**
@@ -13,8 +14,8 @@ import kotlin.math.pow
 class TouchAndDragListener(
     private val params: WindowManager.LayoutParams,
     private val startDragDistance: Int = 10,
-    private val onTouch: Action?,
-    private val onDrag: Action?
+    private val onTouch: () -> Unit,
+    private val onDrag: () -> Unit
 ) : View.OnTouchListener {
     private var initialX: Int = 0
     private var initialY: Int = 0
@@ -46,13 +47,13 @@ class TouchAndDragListener(
                 if (!isDrag) return true
                 params.x = initialX + (event.rawX - initialTouchX).toInt()
                 params.y = initialY + (event.rawY - initialTouchY).toInt()
-                onDrag?.invoke()
+                onDrag.invoke()
                 return true
             }
 
             MotionEvent.ACTION_UP -> {
                 if (!isDrag) {
-                    onTouch?.invoke()
+                    onTouch.invoke()
                     return true
                 }
             }

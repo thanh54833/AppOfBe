@@ -1,15 +1,22 @@
 package com.example.appofbe.features.auto.action
 
+import android.accessibilityservice.AccessibilityService.GestureResultCallback
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.TextView
 import com.example.appofbe.features.auto.bean.Event
-import com.example.appofbe.features.auto.logd
+import com.example.appofbe.features.auto.service.autoClickService
+import kotlin.concurrent.fixedRateTimer
 
-
-class Action(var rootInActiveWindow: AccessibilityNodeInfo,var events : MutableList<Event>) {
+//
+class Action(
+    var rootInActiveWindow: AccessibilityNodeInfo, var events: MutableList<Event>,
+    var dispatchGesture: (gesture: GestureDescription, callback: GestureResultCallback?, handler: Handler?) -> Boolean
+) {
 
     fun inputEditText(key: String, value: String) {
         rootInActiveWindow.findAccessibilityNodeInfosByText(key).firstOrNull()?.let { _info ->
@@ -60,11 +67,31 @@ class Action(var rootInActiveWindow: AccessibilityNodeInfo,var events : MutableL
     fun run(newEvents: MutableList<Event>) {
         events.clear()
         events.addAll(newEvents)
-        events.toString().logd()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
         val builder = GestureDescription.Builder()
         events.forEach { builder.addStroke(it.onEvent()) }
         dispatchGesture(builder.build(), null, null)
     }
 
+
+//    private var isOn = false
+//    private fun viewOnClick() {
+//        if (isOn) {
+//            timer?.cancel()
+//        } else {
+//            timer = fixedRateTimer(
+//                initialDelay = 0,
+//                period = 200
+//            ) {
+//                view.getLocationOnScreen(location)
+//                autoClickService?.click(
+//                    location[0] + view.right + 10,
+//                    location[1] + view.bottom + 10
+//                )
+//            }
+//        }
+//        isOn = !isOn
+//        (view as TextView).text = if (isOn) "ON" else "OFF"
+//
+//    }
 }

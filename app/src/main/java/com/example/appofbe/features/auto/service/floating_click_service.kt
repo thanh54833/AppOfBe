@@ -11,13 +11,10 @@ import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.TextView
 import com.example.appofbe.R
-import com.example.appofbe.features.auto.dp2px
 import com.example.appofbe.features.facebook_utils.FaceUtils.openAppFacebook
 import com.example.appofbe.features.utils.Log
 import java.util.*
-import kotlin.concurrent.fixedRateTimer
 
 /**
  * Created on 2018/9/28.
@@ -40,7 +37,7 @@ class FloatingClickService : Service() {
     @SuppressLint("InflateParams")
     override fun onCreate() {
         super.onCreate()
-        startDragDistance = dp2px(10f)
+        startDragDistance = 100
         view = LayoutInflater.from(this).inflate(R.layout.widget, null)
 
         //setting the layout parameters
@@ -99,26 +96,6 @@ class FloatingClickService : Service() {
 
     }
 
-    private var isOn = false
-    private fun viewOnClick() {
-        if (isOn) {
-            timer?.cancel()
-        } else {
-            timer = fixedRateTimer(
-                initialDelay = 0,
-                period = 200
-            ) {
-                view.getLocationOnScreen(location)
-                autoClickService?.click(
-                    location[0] + view.right + 10,
-                    location[1] + view.bottom + 10
-                )
-            }
-        }
-        isOn = !isOn
-        (view as TextView).text = if (isOn) "ON" else "OFF"
-
-    }
 
     override fun onDestroy() {
         super.onDestroy()

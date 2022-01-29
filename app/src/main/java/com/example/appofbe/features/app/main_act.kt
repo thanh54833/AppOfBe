@@ -13,14 +13,10 @@ import android.view.accessibility.AccessibilityManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.appofbe.R
+import com.example.appofbe.databinding.MainActBinding
 import com.example.appofbe.features.auto.service.FloatingClickService
 import com.example.appofbe.features.auto.service.autoClickService
-import com.example.appofbe.features.auto.shortToast
 import com.example.appofbe.features.capture.ScreenshotService
-import com.example.appofbe.databinding.MainActBinding
-import com.example.appofbe.features.utils.Log
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 
 class MainAct : AppCompatActivity() {
@@ -43,7 +39,6 @@ class MainAct : AppCompatActivity() {
                 startService(serviceIntent)
             } else {
                 askPermission()
-                shortToast("You need System Alert Window Permission to do this")
             }
         }
 
@@ -113,50 +108,6 @@ class MainAct : AppCompatActivity() {
             it.stopSelf()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return it.disableSelf()
             autoClickService = null
-        }
-    }
-}
-
-object Test {
-    class RequestHandler(var name: String) : Runnable {
-        override fun run() {
-            try {
-                // Bắt đầu xử lý request đến
-                (Thread.currentThread().name + " Starting process " + name).Log()
-                // cho ngủ 500 milis để ví dụ là quá trình xử lý mất 0,5 s
-                Thread.sleep(500)
-                // Kết thúc xử lý request
-                (Thread.currentThread().name + " Finished process " + name).Log()
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-        }
-
-    }
-
-    fun singleThreadPoolExample() {
-        val executor: ExecutorService = Executors.newSingleThreadExecutor()
-        // Có 100 request tới cùng lúc
-        // Có 100 request tới cùng lúc
-        for (i in 0..99) {
-            executor.execute(RequestHandler("request-$i"))
-        }
-        executor.shutdown() // Không cho threadpool nhận thêm nhiệm vụ nào nữa
-        while (!executor.isTerminated) {
-            // Chờ xử lý hết các request còn chờ trong Queue ...
-        }
-    }
-
-    fun fixedThreadPoolExample() {
-        val executor = Executors.newFixedThreadPool(5)
-        // Có 100 request tới cùng lúc
-        // Có 100 request tới cùng lúc
-        for (i in 0..99) {
-            executor.execute(RequestHandler("request-$i"))
-        }
-        executor.shutdown() // Không cho threadpool nhận thêm nhiệm vụ nào nữa
-        while (!executor.isTerminated) {
-            // Chờ xử lý hết các request còn chờ trong Queue ...
         }
     }
 }
