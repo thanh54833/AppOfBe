@@ -45,8 +45,6 @@ class AutoClickService : AccessibilityService() {
                 }
             }
         }
-        rootInActiveWindow
-        dispatchGesture()
 
         //" name : ${rootInActiveWindow.describeContents()} ${rootInActiveWindow.className} ${rootInActiveWindow.viewIdResourceName} ${rootInActiveWindow.isAccessibilityFocused}  ${rootInActiveWindow.isCheckable} ".Log()
     }

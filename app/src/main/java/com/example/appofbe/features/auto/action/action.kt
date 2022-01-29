@@ -1,23 +1,15 @@
 package com.example.appofbe.features.auto.action
 
-import android.accessibilityservice.AccessibilityService.GestureResultCallback
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.view.accessibility.AccessibilityNodeInfo
 import com.example.appofbe.features.auto.bean.Event
 import com.example.appofbe.features.auto.logd
 
 
-
-
-class Action(var rootInActiveWindow: AccessibilityNodeInfo,fun dispatchGesture(
-gesture: GestureDescription,
-callback: GestureResultCallback?,
-handler: Handler?
-): Boolean) {
+class Action(var rootInActiveWindow: AccessibilityNodeInfo,var events : MutableList<Event>) {
 
     fun inputEditText(key: String, value: String) {
         rootInActiveWindow.findAccessibilityNodeInfosByText(key).firstOrNull()?.let { _info ->
@@ -74,4 +66,5 @@ handler: Handler?
         events.forEach { builder.addStroke(it.onEvent()) }
         dispatchGesture(builder.build(), null, null)
     }
+
 }
