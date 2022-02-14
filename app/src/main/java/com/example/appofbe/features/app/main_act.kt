@@ -28,6 +28,18 @@ class MainAct : AppCompatActivity() {
         private const val REQUEST_SCREENSHOT = 59706
     }
 
+    override fun onResume() {
+        super.onResume()
+        val hasPermission = isEnableAccessibility()
+        if (!hasPermission) {
+            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            askPermission()
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this@MainAct, R.layout.main_act)
@@ -41,7 +53,6 @@ class MainAct : AppCompatActivity() {
                 askPermission()
             }
         }
-
     }
 
 
@@ -61,18 +72,6 @@ class MainAct : AppCompatActivity() {
             }
         }
         finish()
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        val hasPermission = isEnableAccessibility()
-        if (!hasPermission) {
-            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            askPermission()
-        }
     }
 
     private fun isEnableAccessibility(): Boolean {

@@ -73,7 +73,6 @@ class Action(
         dispatchGesture(builder.build(), null, null)
     }
 
-
 //    private var isOn = false
 //    private fun viewOnClick() {
 //        if (isOn) {
@@ -92,6 +91,5 @@ class Action(
 //        }
 //        isOn = !isOn
 //        (view as TextView).text = if (isOn) "ON" else "OFF"
-//
 //    }
 }
