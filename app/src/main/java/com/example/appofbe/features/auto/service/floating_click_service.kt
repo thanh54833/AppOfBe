@@ -12,8 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import com.example.appofbe.R
-import com.example.appofbe.features.facebook_utils.FaceUtils.openAppFacebook
-import com.example.appofbe.features.utils.Log
+import com.example.appofbe.features.facebook_utils.Log
+import com.example.appofbe.features.facebook_utils.PackageUtils.openAppFacebook
 import java.util.*
 
 /**
@@ -83,11 +83,9 @@ class FloatingClickService : Service() {
 
     private fun execute() {
 
-        "execute :..".Log();
+
         openAppFacebook()
-
         //Thread.sleep(3000)
-
         /*autoClickService?.inputEditText ("Username", "dieuhong54833@gmail.com")
         Thread.sleep(1000)
         autoClickService?.inputEditText ("Password", "Lumia520")

@@ -18,6 +18,10 @@ class Action(
     var dispatchGesture: (gesture: GestureDescription, callback: GestureResultCallback?, handler: Handler?) -> Boolean
 ) {
 
+    fun openPackageApp(name :String){
+
+    }
+
     fun inputEditText(key: String, value: String) {
         rootInActiveWindow.findAccessibilityNodeInfosByText(key).firstOrNull()?.let { _info ->
             val arguments = Bundle()

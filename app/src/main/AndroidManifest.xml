@@ -43,7 +43,7 @@
             />
 
         <service
-            android:name="com.example.appofbe.features.capture.ScreenshotService"
+            android:name="com.example.appofbe.features.capture.screenshot_service"
             android:configChanges="orientation"
             android:enabled="true"
             android:exported="false"

@@ -6,28 +6,41 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
-import com.example.appofbe.features.utils.Log
+import android.widget.Toast
 
-object FaceUtils {
+fun String.Log(message: String = "Log") {
+    android.util.Log.i("===", "${message} : ${this}")
+}
+
+fun Context.toast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+object PackageUtils {
     var appName = "Facebook"
     var PAGE_ID_TEST = "khongsocho.official"
 
-    fun Context.openAppFacebook() {
+    fun openAppFacebook(context: Context) {
         val uri = "facebook:/newsfeed"
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+        context.startActivity(intent)
     }
 
-    fun Context.isInstalledWith(name: String = appName): Boolean {
-        val packageManager = packageManager
-        return runCatching { packageManager.getPackageInfo(getPackageWith(name), 0) }.isSuccess
+    fun isInstalledWith(context: Context, name: String = appName): Boolean {
+        val packageManager = context.packageManager
+        return runCatching {
+            packageManager.getPackageInfo(
+                getPackageWith(context, name),
+                0
+            )
+        }.isSuccess
     }
 
-    fun Context.getPackageWith(name: String = appName): String {
-        getPackage()?.forEach { _appInfo ->
+    fun getPackageWith(context: Context, name: String = appName): String {
+        getPackage(context)?.forEach { _appInfo ->
             _appInfo?.packageName?.let { _package ->
-                if (getAppNameWith(_package).equals(name, ignoreCase = true)) {
+                if (getAppNameWith(context,_package).equals(name, ignoreCase = true)) {
                     return _package
                 }
             }
@@ -35,18 +48,18 @@ object FaceUtils {
         return ""
     }
 
-    private fun Context.getAppNameWith(appName: String): String? {
+     fun getAppNameWith(context: Context,appName: String): String? {
         val applicationInfo: ApplicationInfo? = try {
-            packageManager.getApplicationInfo(appName, 0)
+            context.packageManager.getApplicationInfo(appName, 0)
         } catch (e: PackageManager.NameNotFoundException) {
             null
         }
-        return applicationInfo?.let { packageManager.getApplicationLabel(it).toString() }
+        return applicationInfo?.let { context.packageManager.getApplicationLabel(it).toString() }
             ?: run { "" }
     }
 
-    private fun Context.getPackage(): List<ApplicationInfo?>? {
-        return packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+    private fun getPackage(context: Context): List<ApplicationInfo?>? {
+        return context.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
     }
 
     fun Context.openAppInfo(packageName: String) {
@@ -61,18 +74,18 @@ object FaceUtils {
     }
 
     //method to open page facebook with id page ...
-    fun Context.openPageWith(id: String = PAGE_ID_TEST) {
+    fun openPageWith(context: Context,id: String = PAGE_ID_TEST) {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        intent.data = Uri.parse(getFacebookPageURL(id))
+        intent.data = Uri.parse(getFacebookPageURL(context,id))
         //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+        context.startActivity(intent)
     }
 
     //method to get the right URL to use in the intent ..  path : =https://stackoverflow.com/questions/34564211/open-facebook-page-in-facebook-app-if-installed-on-android/34564284
-    fun Context.getFacebookPageURL(idPage: String = PAGE_ID_TEST): String? {
-        val packageManager = packageManager
+    fun getFacebookPageURL(context:Context,idPage: String = PAGE_ID_TEST): String? {
+        val packageManager = context.packageManager
         return try {
-            val versionCode = packageManager.getPackageInfo(getPackageWith(), 0).versionCode
+            val versionCode = packageManager.getPackageInfo(getPackageWith(context = context), 0).versionCode
             if (versionCode >= 3002850 || !Utils.isNumber(idPage)) { //newer versions of fb app
                 "fb://facewebmodal/f?href=https://www.facebook.com/${idPage}"
             } else { //older versions of fb app

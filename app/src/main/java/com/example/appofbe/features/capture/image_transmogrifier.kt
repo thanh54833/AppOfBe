@@ -9,7 +9,7 @@ import android.view.Surface
 import java.io.ByteArrayOutputStream
 
 
-class ImageTransmogrifier internal constructor(private val svc: ScreenshotService) :
+class image_transmogrifier internal constructor(private val svc: screenshot_service) :
     OnImageAvailableListener {
     private val width: Int
     private val height: Int

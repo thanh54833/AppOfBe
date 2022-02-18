@@ -8,7 +8,7 @@
     <string name="previous">Previous</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="accessibility_service_id">com.example.appofbe/.auto.service.AutoClickService</string>
+    <string name="accessibility_service_id">com.example.appofbe/.features.auto.service.AutoClickService</string>
     <string name="accessibility_service_name">AutoOfBe</string>
     <string name="accessibility_service_description">TODO</string>
 </resources>

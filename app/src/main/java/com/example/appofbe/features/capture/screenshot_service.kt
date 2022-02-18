@@ -31,12 +31,12 @@ import android.os.Process
 import android.util.Log
 import android.view.WindowManager
 import androidx.annotation.Nullable
-import com.example.appofbe.features.utils.Log
+import com.example.appofbe.features.facebook_utils.Log
 import java.io.File
 import java.io.FileOutputStream
 
 
-class ScreenshotService : Service() {
+class screenshot_service : Service() {
     private var projection: MediaProjection? = null
     private var vdisplay: VirtualDisplay? = null
     private val handlerThread = HandlerThread(
@@ -46,7 +46,7 @@ class ScreenshotService : Service() {
     private var handler: Handler? = null
     private var mgr: MediaProjectionManager? = null
     private var wmgr: WindowManager? = null
-    private var it: ImageTransmogrifier? = null
+    private var it: image_transmogrifier? = null
     private var resultCode = 0
     private var resultData: Intent? = null
     private val beeper = ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100)
@@ -96,7 +96,7 @@ class ScreenshotService : Service() {
                     fos.fd.sync()
                     fos.close()
                     MediaScannerConnection.scanFile(
-                        this@ScreenshotService,
+                        this@screenshot_service,
                         arrayOf(output.absolutePath),
                         arrayOf("image/png"),
                         null
@@ -124,7 +124,7 @@ class ScreenshotService : Service() {
 
     private fun startCapture() {
         projection = mgr?.getMediaProjection(resultCode, resultData!!)
-        it = ImageTransmogrifier(this)
+        it = image_transmogrifier(this)
         val cb: MediaProjection.Callback = object : MediaProjection.Callback() {
             override fun onStop() {
                 vdisplay!!.release()
