@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
@@ -13,7 +12,6 @@ import android.view.View
 import android.view.WindowManager
 import com.example.appofbe.R
 import com.example.appofbe.common.logger.Log
-import com.example.appofbe.features.facebook_utils.PackageUtils.openAppFacebook
 import java.util.*
 
 /**
@@ -74,7 +72,7 @@ class FloatingClickService : Service() {
     }
 
     private fun login() {
-        openAppFacebook(this)
+        //openAppFacebook(this)
         //openPageWith()
         Thread.sleep(5000)
         "Login ...".Log()
@@ -84,7 +82,7 @@ class FloatingClickService : Service() {
     private fun execute() {
 
 
-        openAppFacebook(this)
+        //openAppFacebook(this)
         //Thread.sleep(3000)
         /*autoClickService?.inputEditText ("Username", "dieuhong54833@gmail.com")
         Thread.sleep(1000)

@@ -19,6 +19,7 @@ import com.example.appofbe.databinding.MainActBinding
 import com.example.appofbe.features.auto.service.FloatingClickService
 import com.example.appofbe.features.auto.service.autoClickService
 import com.example.appofbe.features.capture.screenshot_service
+import com.example.appofbe.features.utils.package_utils.PackageUtils
 
 
 class MainAct : AppCompatActivity() {
@@ -55,10 +56,13 @@ class MainAct : AppCompatActivity() {
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
         val pkgAppsList: List<ResolveInfo> =
             this.applicationContext.packageManager.queryIntentActivities(mainIntent, 0)
-
+        "pkgAppsList :.${pkgAppsList.size} ".Log()
         pkgAppsList.forEach {
             "package : ${it.activityInfo.packageName}".Log()
         }
+
+        PackageUtils.getPackages(this@MainAct).size.Log("PackageUtils:...")
+
     }
 
     private fun checkPermission() {
