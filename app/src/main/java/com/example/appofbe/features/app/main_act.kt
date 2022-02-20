@@ -49,16 +49,14 @@ class MainAct : AppCompatActivity() {
         }
 
         /// Todo : thanh.ph handle code.
-
         val mainIntent = Intent(Intent.ACTION_MAIN, null)
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
         val pkgAppsList: List<ResolveInfo> =
             this.applicationContext.packageManager.queryIntentActivities(mainIntent, 0)
-        "pkgAppsList :.. ${pkgAppsList.size} ".Log();
+        // "pkgAppsList :.. ${pkgAppsList.size} ".Log();
         pkgAppsList.forEach {
             "package : ${it.activityInfo.packageName}".Log()
         }
-
     }
 
     private fun checkPermission() {

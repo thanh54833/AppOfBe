@@ -74,7 +74,7 @@ class FloatingClickService : Service() {
     }
 
     private fun login() {
-        openAppFacebook()
+        openAppFacebook(this)
         //openPageWith()
         Thread.sleep(5000)
         "Login ...".Log()
@@ -84,7 +84,7 @@ class FloatingClickService : Service() {
     private fun execute() {
 
 
-        openAppFacebook()
+        openAppFacebook(this)
         //Thread.sleep(3000)
         /*autoClickService?.inputEditText ("Username", "dieuhong54833@gmail.com")
         Thread.sleep(1000)
@@ -101,14 +101,15 @@ class FloatingClickService : Service() {
         manager.removeView(view)
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
-        super.onConfigurationChanged(newConfig)
-        val x = params.x
-        val y = params.y
-        params.x = xForRecord
-        params.y = yForRecord
-        xForRecord = x
-        yForRecord = y
-        manager.updateViewLayout(view, params)
-    }
+    // Todo  thanh comment.
+//    override fun onConfigurationChanged(newConfig: Configuration?) {
+//        super.onConfigurationChanged(newConfig)
+//        val x = params.x
+//        val y = params.y
+//        params.x = xForRecord
+//        params.y = yForRecord
+//        xForRecord = x
+//        yForRecord = y
+//        manager.updateViewLayout(view, params)
+//    }
 }

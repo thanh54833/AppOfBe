@@ -40,7 +40,7 @@ object PackageUtils {
     fun getPackageWith(context: Context, name: String = appName): String {
         getPackage(context)?.forEach { _appInfo ->
             _appInfo?.packageName?.let { _package ->
-                if (getAppNameWith(context,_package).equals(name, ignoreCase = true)) {
+                if (getAppNameWith(context, _package).equals(name, ignoreCase = true)) {
                     return _package
                 }
             }
@@ -48,7 +48,7 @@ object PackageUtils {
         return ""
     }
 
-     fun getAppNameWith(context: Context,appName: String): String? {
+    fun getAppNameWith(context: Context, appName: String): String? {
         val applicationInfo: ApplicationInfo? = try {
             context.packageManager.getApplicationInfo(appName, 0)
         } catch (e: PackageManager.NameNotFoundException) {
@@ -74,18 +74,19 @@ object PackageUtils {
     }
 
     //method to open page facebook with id page ...
-    fun openPageWith(context: Context,id: String = PAGE_ID_TEST) {
+    fun openPageWith(context: Context, id: String = PAGE_ID_TEST) {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        intent.data = Uri.parse(getFacebookPageURL(context,id))
+        intent.data = Uri.parse(getFacebookPageURL(context, id))
         //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     }
 
     //method to get the right URL to use in the intent ..  path : =https://stackoverflow.com/questions/34564211/open-facebook-page-in-facebook-app-if-installed-on-android/34564284
-    fun getFacebookPageURL(context:Context,idPage: String = PAGE_ID_TEST): String? {
+    fun getFacebookPageURL(context: Context, idPage: String = PAGE_ID_TEST): String? {
         val packageManager = context.packageManager
         return try {
-            val versionCode = packageManager.getPackageInfo(getPackageWith(context = context), 0).versionCode
+            val versionCode =
+                packageManager.getPackageInfo(getPackageWith(context = context), 0).versionCode
             if (versionCode >= 3002850 || !Utils.isNumber(idPage)) { //newer versions of fb app
                 "fb://facewebmodal/f?href=https://www.facebook.com/${idPage}"
             } else { //older versions of fb app
