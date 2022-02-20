@@ -31,7 +31,7 @@ import android.os.Process
 import android.util.Log
 import android.view.WindowManager
 import androidx.annotation.Nullable
-import com.example.appofbe.features.facebook_utils.Log
+import com.example.appofbe.common.logger.Log
 import java.io.File
 import java.io.FileOutputStream
 
@@ -59,7 +59,7 @@ class screenshot_service : Service() {
     }
 
     override fun onStartCommand(i: Intent, flags: Int, startId: Int): Int {
-        "i.action ${i.action}  ${resultData} ${resultData != null}".Log()
+        "i.action ${i.action}  $resultData ${resultData != null}".Log()
         resultCode = i.getIntExtra(EXTRA_RESULT_CODE, 1337)
         resultData = i.getParcelableExtra(EXTRA_RESULT_INTENT)
 

@@ -12,7 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import com.example.appofbe.R
-import com.example.appofbe.features.facebook_utils.Log
+import com.example.appofbe.common.logger.Log
 import com.example.appofbe.features.facebook_utils.PackageUtils.openAppFacebook
 import java.util.*
 

@@ -7,10 +7,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import com.example.appofbe.common.logger.Log
 
-fun String.Log(message: String = "Log") {
-    android.util.Log.i("===", "${message} : ${this}")
-}
 
 fun Context.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
