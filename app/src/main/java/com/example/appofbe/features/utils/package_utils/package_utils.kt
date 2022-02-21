@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import com.example.appofbe.common.logger.Log
 
 
 fun Context.toast(message: String) {
@@ -52,6 +54,16 @@ object PackageUtils {
 
     @SuppressLint("QueryPermissionsNeeded")
     fun getPackages(context: Context): List<ApplicationInfo?> {
+        /// Todo : thanh.ph handle code.
+        val mainIntent = Intent(Intent.ACTION_MAIN, null)
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+        val pkgAppsList: List<ResolveInfo> =
+            context.applicationContext.packageManager.queryIntentActivities(mainIntent, 0)
+        "pkgAppsList :.${pkgAppsList.size} ".Log()
+        pkgAppsList.forEach {
+            "package : ${it.activityInfo.packageName}".Log()
+        }
+
         return context.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
     }
 
